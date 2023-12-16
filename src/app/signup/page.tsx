@@ -3,7 +3,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { DNA } from "react-loader-spinner";
 
 const SignUpPage = () => {
@@ -17,6 +17,7 @@ const SignUpPage = () => {
   // const [buttonDisabled, setButtonDisabled] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
   const handelSubmit = async (e: any) => {
+    const toastId = toast.loading("Logging In....");
     try {
       setLoading(true);
       e.preventDefault();
@@ -45,10 +46,15 @@ const SignUpPage = () => {
       console.log(user);
       const response = await axios.post("/api/users/signup", user);
       console.log("signUp Success", response.data);
+      if (response.data.success === 'true') {
+        toast.success("Logged In...", { id: toastId });
+      }
       router.push("/login");
     } catch (error: any) {
       console.log("Sign up failed", error.message);
-      toast.error(error.message);
+      // toast.error(error.message);
+      console.log(error);
+      toast.error("User already Exist", { id: toastId });
     } finally {
       setLoading(false);
     }
@@ -67,7 +73,8 @@ const SignUpPage = () => {
   // }, [user]);
   console.log(user);
   return (
-    <section className="bg-white dark:bg-gray-900">
+    <section className="">
+      {/* <Toaster /> */}
       <div className="container flex items-center justify-center min-h-screen px-6 mx-auto">
         <form onSubmit={handelSubmit} className="w-full max-w-md">
           <h1 className="mt-3 text-2xl text-center font-semibold text-gray-800 capitalize sm:text-3xl dark:text-white">
