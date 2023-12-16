@@ -1,7 +1,22 @@
 /* eslint-disable @next/next/no-img-element */
+'use client'
+import axios from "axios";
+import { useRouter } from "next/router";
 import React from "react";
+import toast from "react-hot-toast";
 
-const page = () => {
+const HomePage = () => {
+  // const router = useRouter()
+  const handelLogout = async () =>{
+    const toastId = toast.loading("Logging out....");
+    try {
+      await axios.get('./api/users/logout')
+      toast.success("Logged out", { id: toastId });
+      // router.push('/login')
+    } catch (error:any) {
+      console.log(error.message)
+    }
+  }
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1">
@@ -42,7 +57,7 @@ const page = () => {
               <a>Settings</a>
             </li>
             <li>
-              <a>Logout</a>
+              <button onClick={handelLogout}>Logout</button>
             </li>
           </ul>
         </div>
@@ -51,4 +66,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default HomePage;

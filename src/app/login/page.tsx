@@ -47,7 +47,7 @@ const LogInPage = () => {
       console.log("Login failed", error.message);
       // toast.error(error.message);
       console.log(error);
-      toast.error("User already Exist", { id: toastId });
+      toast.error(error.message, { id: toastId });
     } finally {
       setLoading(false);
     }
